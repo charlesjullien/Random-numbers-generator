@@ -91,7 +91,7 @@ int main(int ac, char **av)
 	while (i < n)
 	{
 		if (i < n - 1)
-			printf("%ld, ", tab[i]);
+			printf("%ld ", tab[i]);
 		else
 			printf("%ld\n", tab[i]);
 		i++;
