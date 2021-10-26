@@ -2,7 +2,7 @@
 #include <time.h>
 #include <stdlib.h>
 
-int	ft_atoi(const char *str)
+long int	ft_atoi(const char *str)
 {
 	int				i;
 	long long int	sign;
@@ -26,24 +26,18 @@ int	ft_atoi(const char *str)
 		i++;
 	}
 	res = res * sign;
-	return ((int)res);
+	return ((long int)res);
 }
 
-int		is_doublon(int *tab, int size)
+int		is_doublon(long int *tab, long int size, long int n)
 {
 	int		i;
-	int		j;
 
 	i = 0;
 	while (i < size)
 	{
-		j = i + 1;
-		while (j < size)
-		{
-				if (tab[i] == tab[j])
-					return (1);
-				j++;
-		}
+		if (tab[i] == n)
+			return (1);
 		i++;
 	}
 	return (0);
@@ -51,45 +45,55 @@ int		is_doublon(int *tab, int size)
 
 int main(int ac, char **av)
 {
-	int	curr;
-	int n;
-	int i;
-	int min;
-	int max;
-	int	*tab;
+	long int	curr;
+	long int n;
+	long int i;
+	long int min;
+	long int max;
+	long int	*tab;
 
 	curr = 0;
 	i = 0;
+	srand((long int) time(0) + getpid());
 	if (ac != 4)
 	{
-		printf("model : \"./a.out nb_of_digits_wanted nb_min nb_max\"\n");
+		printf("Model : \"./a.out nb_of_digits_wanted nb_min nb_max\"\n");
 		return (0);
 	}
 	n = ft_atoi(av[1]);
 	min = ft_atoi(av[2]);
 	max = ft_atoi(av[3]);
-	tab = malloc(sizeof(int) * n);
+	tab = malloc(sizeof(long int) * n);
+	if (((max) - (min)) < n - 1)
+	{
+		printf("digits wanted : %ld, gap : %ld (max - min + 1). The number of digits wanted must be bigger than (nb_max - nb_min).\n", n, ((max) - (min) + 1));
+		return (0);
+	}
 	while (i < n)
 	{
 		tab[i] = 0;
 		i++;
 	}
-	while (is_doublon(tab, n))
+	i = 0;
+	while (i < n)
 	{
-		i = 0;
-		while (i < n)
+		curr = rand() % (max + 1 - min) + min;
+		srand(rand());
+		while (is_doublon(tab, i, curr))
 		{
-			tab[i] = (rand() + getpid()) % (max - min + 1) + 1;
-			i++;
+			curr = rand() % (max + 1 - min) + min;
+			srand(rand());
 		}
+		tab[i] = curr;
+		i++;
 	}
 	i = 0;
 	while (i < n)
 	{
 		if (i < n - 1)
-			printf("%d, ", tab[i]);
+			printf("%ld, ", tab[i]);
 		else
-			printf("%d\n", tab[i]);
+			printf("%ld\n", tab[i]);
 		i++;
 	}
 }
