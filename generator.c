@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 long int	ft_atoi(const char *str)
 {
